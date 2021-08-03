@@ -1,0 +1,79 @@
+Sub hello()
+    Dim firstDataRow As Integer
+    Dim colPointer As Integer
+    Dim plantInfoStartingCol
+    Dim atdsInfoStartingCol
+    
+    'Key in your numbers here!!!
+    firstDataRow = 2
+    plantInfoStartingCol = 1
+    atdsInfoStartingCol = 2
+    colPointer = 3
+    
+    'If empty
+    If Cells(firstDataRow, plantInfoStartingCol).Value = "" Then
+        Cells(1, plantInfoStartingCol).Value = "[Col1 IPs]"
+        Cells(1, atdsInfoStartingCol).Value = "[Col2 IPs]"
+        Worksheets("Sheet1").Range(Columns(colPointer), Columns(colPointer + 1)).Clear
+        With Worksheets("Sheet1").Cells.ColumnWidth = 8.43
+        End With
+    
+    'If not empty
+    Else
+        Cells(1, plantInfoStartingCol).Value = "Plant"
+        Cells(1, atdsInfoStartingCol).Value = "ATDS"
+        Worksheets("Sheet1").Range(Columns(colPointer), Columns(colPointer + 1)).Clear
+        Cells(1, colPointer).Value = "In Col1 Not Col2"
+        Cells(1, colPointer + 1).Value = "In Col2 Not Col1"
+        colPointer = colPointer + 1
+        
+        'Logic
+        Dim i As Integer 'Iterate Plant IPs
+        Dim j As Integer 'Iterate ATDS IPs
+        Dim dataPointer As Integer 'Pointer for inserting data
+        Dim match As Boolean 'True when there is a match
+        
+        'How many rows
+        Dim lastRowI As Integer
+        Dim lastRowJ As Integer
+        lastRowI = Cells(Rows.Count, 1).End(xlUp).Row
+        lastRowJ = Cells(Rows.Count, 2).End(xlUp).Row
+        
+        'Fit nicely for aesthetic reasons
+        Worksheets("Sheet1").Range(Columns(1), Columns(colPointer)).AutoFit
+        
+        'Initialise data pointer
+        dataPointer = firstDataRow
+        
+        For i = firstDataRow To lastRowI
+            match = False
+            For j = firstDataRow To lastRowJ
+                If Cells(i, 1).Value = Cells(j, 2).Value Then
+                    match = True
+                    Exit For
+                End If
+            Next
+            If match = False Then
+                Cells(dataPointer, 3).Value = Cells(i, 1).Value
+                dataPointer = dataPointer + 1
+            End If
+        Next
+        
+        dataPointer = firstDataRow
+        
+        For j = firstDataRow To lastRowJ
+            match = False
+            For i = firstDataRow To lastRowI
+                If Cells(j, 2).Value = Cells(i, 1).Value Then
+                    match = True
+                    Exit For
+                End If
+            Next
+            If match = False Then
+                Cells(dataPointer, 4).Value = Cells(j, 2).Value
+                dataPointer = dataPointer + 1
+            End If
+        Next
+    End If
+        
+End Sub
