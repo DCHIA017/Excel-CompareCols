@@ -18,7 +18,7 @@ Sub hello()
         With Worksheets("Sheet1").Cells.ColumnWidth = 8.43
         End With
     
-    'If not empty
+    'Else if not empty
     Else
         Cells(1, plantInfoStartingCol).Value = "Plant"
         Cells(1, atdsInfoStartingCol).Value = "ATDS"
